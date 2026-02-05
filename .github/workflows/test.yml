@@ -7,6 +7,17 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# Sets permissions for GitHub Pages deployment
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   backstop:
     runs-on: ubuntu-latest
@@ -35,7 +46,7 @@ jobs:
         if: steps.backstop_test.outcome == 'failure'
         run: echo "::warning::Visual regression tests found differences"
 
-      - name: Upload BackstopJS report
+      - name: Upload BackstopJS report artifact
         uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -45,3 +56,22 @@ jobs:
             backstop_data/bitmaps_test/
             backstop_data/bitmaps_reference/
           retention-days: 30
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: backstop_data/html_report/
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: backstop
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
