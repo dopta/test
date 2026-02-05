@@ -20,8 +20,24 @@
   "scenarios": [
     {
       "label": "Homepage",
-      "url": "https://dev-optasy-demo-edu.pantheonsite.io/",
-      "referenceUrl": "https://test-optasy-demo-edu.pantheonsite.io/",
+      "url": "https://test-optasy-demo-edu.pantheonsite.io/",
+      "referenceUrl": "https://live-optasy-demo-edu.pantheonsite.io/",
+      "delay": 500,
+      "misMatchThreshold": 0.1,
+      "requireSameDimensions": true
+    },
+    {
+      "label": "About Page",
+      "url": "https://test-optasy-demo-edu.pantheonsite.io/Learn.html",
+      "referenceUrl": "https://live-optasy-demo-edu.pantheonsite.io/Learn.html",
+      "delay": 500,
+      "misMatchThreshold": 0.1,
+      "requireSameDimensions": true
+    },
+    {
+      "label": "Contact Page",
+      "url": "https://test-optasy-demo-edu.pantheonsite.io/program-finder",
+      "referenceUrl": "https://live-optasy-demo-edu.pantheonsite.io/program-finder",
       "delay": 500,
       "misMatchThreshold": 0.1,
       "requireSameDimensions": true
