@@ -20,7 +20,7 @@
   "scenarios": [
     {
       "label": "Homepage",
-      "url": "https://example.com",
+      "url": "https://live-optasy-demo-edu.pantheonsite.io/",
       "delay": 500,
       "misMatchThreshold": 0.1,
       "requireSameDimensions": true
