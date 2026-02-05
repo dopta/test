@@ -63,3 +63,11 @@
 /drush
 /drupal.phar
 /drupal
+
+# BackstopJS visual regression testing
+backstop_data/html_report/
+backstop_data/bitmaps_test/
+backstop_data/ci_report/
+backstop_data/engine_scripts/
+# Uncomment the line below if you don't want to track reference images
+# backstop_data/bitmaps_reference/

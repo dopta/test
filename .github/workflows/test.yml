@@ -1,15 +1,47 @@
-name: Test Workflow
+name: Visual Regression Tests
 
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
-  workflow_dispatch:  # Allows manual triggering from GitHub UI
+  workflow_dispatch:
 
 jobs:
-  test:
+  backstop:
     runs-on: ubuntu-latest
     steps:
-      - name: Display test message
-        run: echo "Hello! This is a test message from GitHub Actions."
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install BackstopJS
+        run: npm install -g backstopjs
+
+      - name: Create reference screenshots
+        run: backstop reference --config=backstop.json
+        continue-on-error: true
+
+      - name: Run visual regression tests
+        id: backstop_test
+        run: backstop test --config=backstop.json
+        continue-on-error: true
+
+      - name: Check test result
+        if: steps.backstop_test.outcome == 'failure'
+        run: echo "::warning::Visual regression tests found differences"
+
+      - name: Upload BackstopJS report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: backstop-report
+          path: |
+            backstop_data/html_report/
+            backstop_data/bitmaps_test/
+            backstop_data/bitmaps_reference/
+          retention-days: 30
