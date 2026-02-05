@@ -20,24 +20,16 @@
   "scenarios": [
     {
       "label": "Homepage",
-      "url": "https://test-optasy-demo-edu.pantheonsite.io/",
-      "referenceUrl": "https://live-optasy-demo-edu.pantheonsite.io/",
+      "url": "https://opinacer2stg.prod.acquia-sites.com/",
+      "referenceUrl": "https://peelregion.ca/",
       "delay": 500,
       "misMatchThreshold": 0.1,
       "requireSameDimensions": true
     },
     {
-      "label": "About Page",
-      "url": "https://test-optasy-demo-edu.pantheonsite.io/Learn.html",
-      "referenceUrl": "https://live-optasy-demo-edu.pantheonsite.io/Learn.html",
-      "delay": 500,
-      "misMatchThreshold": 0.1,
-      "requireSameDimensions": true
-    },
-    {
-      "label": "Contact Page",
-      "url": "https://test-optasy-demo-edu.pantheonsite.io/program-finder",
-      "referenceUrl": "https://live-optasy-demo-edu.pantheonsite.io/program-finder",
+      "label": "Waste Collection Schedules",
+      "url": "https://opinacer2stg.prod.acquia-sites.com/waste/waste-collection-schedules",
+      "referenceUrl": "https://peelregion.ca/waste/waste-collection-schedules",
       "delay": 500,
       "misMatchThreshold": 0.1,
       "requireSameDimensions": true
