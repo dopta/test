@@ -1,0 +1,87 @@
+name: Visual Regression Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# Sets permissions for GitHub Pages deployment
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  backstop:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install BackstopJS
+        run: npm install -g backstopjs
+
+      - name: Create reference screenshots
+        run: backstop reference --config=backstop.json
+        continue-on-error: true
+
+      - name: Run visual regression tests
+        id: backstop_test
+        run: backstop test --config=backstop.json
+        continue-on-error: true
+
+      - name: Check test result
+        if: steps.backstop_test.outcome == 'failure'
+        run: echo "::warning::Visual regression tests found differences"
+
+      - name: Upload BackstopJS report artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: backstop-report
+          path: |
+            backstop_data/html_report/
+            backstop_data/bitmaps_test/
+            backstop_data/bitmaps_reference/
+          retention-days: 30
+
+      - name: Prepare report for GitHub Pages
+        run: |
+          mkdir -p public
+          cp -r backstop_data/html_report public/
+          cp -r backstop_data/bitmaps_reference public/
+          cp -r backstop_data/bitmaps_test public/
+          echo '<meta http-equiv="refresh" content="0; url=html_report/">' > public/index.html
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+        with:
+          enablement: true
+
+      - name: Upload to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public/
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: backstop
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
