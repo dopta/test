@@ -22,7 +22,6 @@
       "label": "Homepage",
       "url": "https://opinacer2stg.prod.acquia-sites.com/",
       "referenceUrl": "https://peelregion.ca/",
-      "selectors": ["document", ".l-header"],
       "delay": 500,
       "misMatchThreshold": 0.1,
       "requireSameDimensions": true
@@ -31,7 +30,6 @@
       "label": "Waste Collection Schedules",
       "url": "https://opinacer2stg.prod.acquia-sites.com/waste/waste-collection-schedules",
       "referenceUrl": "https://peelregion.ca/waste/waste-collection-schedules",
-      "selectors": ["document", ".l-header"],
       "delay": 500,
       "misMatchThreshold": 0.1,
       "requireSameDimensions": true
