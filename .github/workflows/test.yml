@@ -60,7 +60,7 @@ jobs:
       - name: Prepare report for GitHub Pages
         run: |
           mkdir -p public
-          cp -r backstop_data/html_report/* public/
+          cp -r backstop_data/html_report public/
           cp -r backstop_data/bitmaps_reference public/
           cp -r backstop_data/bitmaps_test public/
 
