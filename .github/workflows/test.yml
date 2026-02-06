@@ -57,6 +57,13 @@ jobs:
             backstop_data/bitmaps_reference/
           retention-days: 30
 
+      - name: Prepare report for GitHub Pages
+        run: |
+          mkdir -p public
+          cp -r backstop_data/html_report/* public/
+          cp -r backstop_data/bitmaps_reference public/
+          cp -r backstop_data/bitmaps_test public/
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
         with:
@@ -65,7 +72,7 @@ jobs:
       - name: Upload to GitHub Pages
         uses: actions/upload-pages-artifact@v3
         with:
-          path: backstop_data/html_report/
+          path: public/
 
   deploy:
     environment:
