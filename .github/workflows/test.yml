@@ -63,6 +63,7 @@ jobs:
           cp -r backstop_data/html_report public/
           cp -r backstop_data/bitmaps_reference public/
           cp -r backstop_data/bitmaps_test public/
+          echo '<meta http-equiv="refresh" content="0; url=html_report/">' > public/index.html
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
