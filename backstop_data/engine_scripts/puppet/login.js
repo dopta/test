@@ -46,6 +46,15 @@ module.exports = async (page, scenario, vp) => {
       page.click('[data-drupal-selector="edit-submit"]'),
     ]);
 
-    console.log(`[login.js] Authenticated as "${username}" on ${loginUrl}`);
+    // Verify login actually succeeded — Drupal stays on /user/login if it fails
+    const finalUrl = page.url();
+    if (finalUrl.includes("/user/login")) {
+      const errorText = await page
+        .$eval(".messages--error", (el) => el.textContent.trim())
+        .catch(() => "Check your BACKSTOP_USERNAME and BACKSTOP_PASSWORD secrets.");
+      throw new Error(`[login.js] Login FAILED for ${origin}: ${errorText}`);
+    }
+
+    console.log(`[login.js] Authenticated as "${username}" on ${loginUrl} → redirected to ${finalUrl}`);
   }
 };
