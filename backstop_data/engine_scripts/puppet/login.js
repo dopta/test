@@ -12,12 +12,6 @@
  */
 
 module.exports = async (page, scenario, vp) => {
-  // Derive the login URL from whichever site is currently being captured
-  // (staging for test runs, main for reference runs) so the same script
-  // works for both without any extra configuration.
-  const origin = new URL(scenario.url).origin;
-  const loginUrl = `${origin}/user/login`;
-
   const username = process.env.BACKSTOP_USERNAME || "";
   const password = process.env.BACKSTOP_PASSWORD || "";
 
@@ -27,19 +21,31 @@ module.exports = async (page, scenario, vp) => {
     );
   }
 
-  // Navigate to the login page
-  await page.goto(loginUrl, { waitUntil: "networkidle0" });
+  // Log into every unique origin in this scenario (both url and referenceUrl).
+  // Puppeteer stores cookies per-domain, so logging into site B does not clear
+  // site A's session — both sets of cookies are preserved. This ensures the
+  // authenticated page loads correctly whether BackstopJS is capturing the test
+  // screenshots (url) or the reference screenshots (referenceUrl).
+  const origins = [
+    ...new Set(
+      [scenario.url, scenario.referenceUrl]
+        .filter(Boolean)
+        .map((u) => new URL(u).origin)
+    ),
+  ];
 
-  // Fill in credentials.
-  // Update the selectors below to match your site's login form.
-  await page.type('[name="name"]', username);
-  await page.type('[name="pass"]', password);
+  for (const origin of origins) {
+    const loginUrl = `${origin}/user/login`;
 
-  // Click the submit button and wait for navigation to complete
-  await Promise.all([
-    page.waitForNavigation({ waitUntil: "networkidle0" }),
-    page.click('[data-drupal-selector="edit-submit"]'),
-  ]);
+    await page.goto(loginUrl, { waitUntil: "networkidle0" });
+    await page.type('[name="name"]', username);
+    await page.type('[name="pass"]', password);
 
-  console.log(`[login.js] Authenticated as "${username}" on ${loginUrl}`);
+    await Promise.all([
+      page.waitForNavigation({ waitUntil: "networkidle0" }),
+      page.click('[data-drupal-selector="edit-submit"]'),
+    ]);
+
+    console.log(`[login.js] Authenticated as "${username}" on ${loginUrl}`);
+  }
 };
