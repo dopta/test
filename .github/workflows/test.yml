@@ -36,11 +36,17 @@ jobs:
       - name: Create reference screenshots
         run: backstop reference --config=backstop.json
         continue-on-error: true
+        env:
+          BACKSTOP_USERNAME: ${{ secrets.BACKSTOP_USERNAME }}
+          BACKSTOP_PASSWORD: ${{ secrets.BACKSTOP_PASSWORD }}
 
       - name: Run visual regression tests
         id: backstop_test
         run: backstop test --config=backstop.json
         continue-on-error: true
+        env:
+          BACKSTOP_USERNAME: ${{ secrets.BACKSTOP_USERNAME }}
+          BACKSTOP_PASSWORD: ${{ secrets.BACKSTOP_PASSWORD }}
 
       - name: Check test result
         if: steps.backstop_test.outcome == 'failure'

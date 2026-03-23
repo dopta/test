@@ -19,17 +19,18 @@
   ],
   "scenarios": [
     {
-      "label": "Homepage",
-      "url": "https://opinacer2stg.prod.acquia-sites.com/",
-      "referenceUrl": "https://peelregion.ca/",
+      "label": "Blog",
+      "url": "https://staging-5em2ouy-upswsw75dlxbg.ca-1.platformsh.site/blog",
+      "referenceUrl": "https://main-bvxea6i-upswsw75dlxbg.ca-1.platformsh.site/blog",
       "delay": 500,
       "misMatchThreshold": 0.1,
       "requireSameDimensions": true
     },
     {
-      "label": "Waste Collection Schedules",
-      "url": "https://opinacer2stg.prod.acquia-sites.com/waste/waste-collection-schedules",
-      "referenceUrl": "https://peelregion.ca/waste/waste-collection-schedules",
+      "label": "Admin Content",
+      "onBeforeScript": "puppet/login.js",
+      "url": "https://staging-5em2ouy-upswsw75dlxbg.ca-1.platformsh.site/admin/content",
+      "referenceUrl": "https://main-bvxea6i-upswsw75dlxbg.ca-1.platformsh.site/admin/content",
       "delay": 500,
       "misMatchThreshold": 0.1,
       "requireSameDimensions": true
