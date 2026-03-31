@@ -1,0 +1,8 @@
+FROM backstopjs/backstopjs:latest
+
+WORKDIR /src
+
+COPY backstop_data/engine_scripts ./backstop_data/engine_scripts
+
+ENTRYPOINT ["backstop"]
+CMD ["test"]

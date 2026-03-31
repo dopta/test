@@ -5,13 +5,25 @@
  * Credentials are read from environment variables so they are never
  * committed to source control:
  *
+ *   BACKSTOP_HTTP_USER=httpuser BACKSTOP_HTTP_PASS=httppass \
  *   BACKSTOP_USERNAME=myuser BACKSTOP_PASSWORD=mypass npx backstop test
+ *
+ * BACKSTOP_HTTP_USER / BACKSTOP_HTTP_PASS handle the Platform.sh HTTP Basic
+ * Auth prompt. BACKSTOP_USERNAME / BACKSTOP_PASSWORD handle the Drupal login.
  *
  * The login URL is derived automatically from the scenario URL so the same
  * script works for both the staging and main environments.
  */
 
 module.exports = async (page, scenario, vp) => {
+  const httpUser = process.env.BACKSTOP_HTTP_USER || "";
+  const httpPass = process.env.BACKSTOP_HTTP_PASS || "";
+
+  if (httpUser && httpPass) {
+    const encoded = Buffer.from(`${httpUser}:${httpPass}`).toString("base64");
+    await page.setExtraHTTPHeaders({ Authorization: `Basic ${encoded}` });
+  }
+
   const username = process.env.BACKSTOP_USERNAME || "";
   const password = process.env.BACKSTOP_PASSWORD || "";
 

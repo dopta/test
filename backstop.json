@@ -20,6 +20,7 @@
   "scenarios": [
     {
       "label": "Blog",
+      "onBeforeScript": "puppet/httpAuth.js",
       "url": "https://staging-5em2ouy-upswsw75dlxbg.ca-1.platformsh.site/blog",
       "referenceUrl": "https://main-bvxea6i-upswsw75dlxbg.ca-1.platformsh.site/blog",
       "delay": 500,
